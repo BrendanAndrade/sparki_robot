@@ -27,16 +27,16 @@ class Sparki(object):
         self._protocol = SparkiProtocol()
         self._protocol.setLineCallback(self._handleMessage)
         self._ser = SerialPort(self._protocol, self._port, reactor, baudrate=9600)
-        t = Thread(target = reactor.run, args=(False,))
-        t.start()
+        self._reactor_thread = Thread(target = reactor.run, args=(False,))
+        self._reactor_thread.daemon = True
+        self._reactor_thread.start()
 
     ##
     #
     #
     def shutdown(self):
-        #self._ser.stop()
         reactor.stop()
-        
+
     ##
     #
     #

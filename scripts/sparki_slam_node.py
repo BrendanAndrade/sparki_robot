@@ -37,7 +37,10 @@ class SparkiSLAMNode(object):
     #
     def begin(self):
         self.sparki.begin()
-
+    
+    ##
+    #
+    #
     def shutdown(self):
         self.sparki.shutdown()
 
@@ -60,13 +63,16 @@ class SparkiSLAMNode(object):
         range_msg.field_of_view = float(data[0])
         self.range_pub.publish(range_msg)
 
+
 def main(port):
     rospy.init_node('sparki', anonymous=True)
     name = rospy.get_name()
     
     sparki_slam_node = SparkiSLAMNode(name, port)
     rospy.spin()
-    rospy.on_shutdown(sparki_slam_node.shutdown())
+    while not rospy.is_shutdown():
+        sparki_slam_node.shutdown()
+
 
 if __name__ == "__main__":
     args = rospy.myargv(argv=sys.argv)
